@@ -37,6 +37,8 @@ public class HvHCoreConfig : BasePluginConfig
     // Optional: !comp / !wm also write MAP=, GAME_TYPE=, GAME_MODE= into this KEY=VALUE file so a launcher
     // script can boot into the same mode after a restart. Empty = don't write anything.
     [JsonPropertyName("ModeEnvFile")] public string ModeEnvFile { get; set; } = "";
+    // Lock teams once a match goes live (hvh_lock on from MatchZy cfgs, or !lock). Admins: !allow, !unlock.
+    [JsonPropertyName("TeamLock")] public bool TeamLock { get; set; } = true;
     // Hold server-side quit/exit for a chat + center-screen countdown while humans are connected.
     [JsonPropertyName("RestartWarning")] public bool RestartWarning { get; set; } = true;
     [JsonPropertyName("RestartWarningSeconds")] public float RestartWarningSeconds { get; set; } = 5f;

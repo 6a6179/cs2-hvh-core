@@ -131,6 +131,7 @@ public partial class HvHCorePlugin
                 (_voidTotal > 0 ? $"{Sep}{Label("Voided")}{ChatColors.Red}{_voidTotal}" : ""),
             $" {Label("Game")}{W}{mode}{ChatColors.Grey} on {W}{Pretty(Server.MapName)}{Sep}{Phase()}",
             $" {Label("Players")}{W}{humans}{ChatColors.Grey}/{Server.MaxPlayers}{(bots > 0 ? $"{ChatColors.Grey} +{bots} bots" : "")}" +
+                (_locked ? $"{Sep}{Label("Teams")}{ChatColors.Red}locked" : "") +
                 (forPlayer != null ? $"{Sep}{Label("Your ping")}{W}{forPlayer.Ping}ms" : ""),
             $" {HealthDot(_tickRate, _worstGapMs)} {Label("Tick")}{tickColor}{_tickRate:0}{Sep}{Label("Frame")}{frameColor}{_worstGapMs:0}ms" +
                 $"{Sep}{Label("CPU")}{cpuColor}{_cpuPct:0}%{Sep}{Label("RAM")}{W}{RamUsed()}",

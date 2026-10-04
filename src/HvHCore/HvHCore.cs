@@ -16,7 +16,7 @@ namespace HvHCore;
 public partial class HvHCorePlugin : BasePlugin, IPluginConfig<HvHCoreConfig>
 {
     public override string ModuleName => "HvHCore";
-    public override string ModuleVersion => "1.0.0";
+    public override string ModuleVersion => "1.1.0";
     public override string ModuleAuthor => "6a6179";
     public override string ModuleDescription => "HvH server toolkit: shot validator / doubletap gate, nospread toggle, mode switch, status";
 
@@ -42,6 +42,7 @@ public partial class HvHCorePlugin : BasePlugin, IPluginConfig<HvHCoreConfig>
         AddCommandListener("say_team", (pl, i) => OnSay(pl, i), HookMode.Pre);
         AddCommandListener("quit", (pl, i) => OnQuit(pl, i), HookMode.Pre);
         AddCommandListener("exit", (pl, i) => OnQuit(pl, i), HookMode.Pre);
+        RegisterTeamLock();
 
         RegisterListener<Listeners.OnMapStart>(_ =>
         {
@@ -52,6 +53,7 @@ public partial class HvHCorePlugin : BasePlugin, IPluginConfig<HvHCoreConfig>
             _gates.Clear();
             // map changed mid-knife round: drop the forced dt (MatchZy re-execs warmup.cfg anyway)
             if (_knife) { _knife = false; _dt = false; }
+            ClearLock();
             // gamemode cfgs run after map start; apply after them too
             AddTimer(1f, Apply, TimerFlags.STOP_ON_MAPCHANGE);
             AddTimer(5f, Apply, TimerFlags.STOP_ON_MAPCHANGE);
@@ -192,6 +194,17 @@ public partial class HvHCorePlugin : BasePlugin, IPluginConfig<HvHCoreConfig>
         if (!IsAdmin(player)) return HookResult.Continue;
         if (cmd is "ns" or "dt") Toggle(cmd, arg, player);
         else if (Modes.ContainsKey(cmd)) SwitchMode(cmd, arg, player);
+        else if (cmd is "lock" or "unlock")
+        {
+            if (cmd == "lock" && !Config.TeamLock) player.PrintToChat($"{Prefix} team lock is disabled in the config");
+            else SetLock(cmd == "lock", player);
+        }
+        else if (cmd == "allow")
+        {
+            var rest = parts.Length > 1 ? string.Join(' ', parts[1..]) : null;
+            if (rest == null) player.PrintToChat($"{Prefix} usage: !allow <player> [t|ct]");
+            else Allow(rest, player, s => player.PrintToChat($"{Prefix} {s}"));
+        }
         return HookResult.Continue;   // typed command stays visible in chat
     }
 
