@@ -41,5 +41,6 @@ public class HvHCoreConfig : BasePluginConfig
     [JsonPropertyName("TeamLock")] public bool TeamLock { get; set; } = true;
     // Hold server-side quit/exit for a chat + center-screen countdown while humans are connected.
     [JsonPropertyName("RestartWarning")] public bool RestartWarning { get; set; } = true;
+    [JsonPropertyName("WarmupMoney")] public int WarmupMoney { get; set; } = 16000;   // cash on every warmup (re)spawn; 0 = off
     [JsonPropertyName("RestartWarningSeconds")] public float RestartWarningSeconds { get; set; } = 5f;
 }

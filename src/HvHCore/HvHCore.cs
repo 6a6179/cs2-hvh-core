@@ -16,7 +16,7 @@ namespace HvHCore;
 public partial class HvHCorePlugin : BasePlugin, IPluginConfig<HvHCoreConfig>
 {
     public override string ModuleName => "HvHCore";
-    public override string ModuleVersion => "1.1.0";
+    public override string ModuleVersion => "1.2.0";
     public override string ModuleAuthor => "6a6179";
     public override string ModuleDescription => "HvH server toolkit: shot validator / doubletap gate, nospread toggle, mode switch, status";
 
@@ -43,6 +43,7 @@ public partial class HvHCorePlugin : BasePlugin, IPluginConfig<HvHCoreConfig>
         AddCommandListener("quit", (pl, i) => OnQuit(pl, i), HookMode.Pre);
         AddCommandListener("exit", (pl, i) => OnQuit(pl, i), HookMode.Pre);
         RegisterTeamLock();
+        RegisterWarmupMoney();
 
         RegisterListener<Listeners.OnMapStart>(_ =>
         {
